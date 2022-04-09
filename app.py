@@ -6,7 +6,7 @@ import nltk
 nltk.download('omw-1.4')
 from nltk.stem import WordNetLemmatizer
 from tensorflow.keras.models import load_model
-from flask import Flask, render_template, request, redirect
+from flask import Flask, jsonify, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -64,6 +64,13 @@ print(res)
 @app.route("/", methods=['GET','POST'])
 def FrontPage():
     return render_template('index.html', reply = res)
+
+@app.route("/reply", methods=['GET','POST'])
+def output():
+    data = request.json['message']
+    ints = predict_class(data)
+    res = get_response(ints, intents)
+    return jsonify(res)
 
 if __name__ == "__main__":
     app.run(debug=True,port=8000)

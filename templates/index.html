@@ -1,27 +1,96 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+        >
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/134/134914.png" type="image/icon type">
+        <title>ChatBot!</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid d-flex justify-content-center align-items-center">
+                <a class="navbar-brand fw-bold fs-4" href="/"><ion-icon name="chatbox-ellipses-outline"></ion-icon> CHAT-BOT Created By Azeemaj101
+                    <a href="https://github.com/Azeemaj101" target="_blank" class="icon" rel="noopener noreferrer"><ion-icon name="logo-github" size="large"></ion-icon></a>
+                </a>
+            </div>
+        </nav>
+        <div class="chat_area">
+            <div class="inner_chat">
+                <div class="upper pt-2 ps-2 pe-2" id="upper">
+                    <div class="No_message pe-1 mt-2" id="No_message"><p class="rounded-3 pe-2 ps-2 p-1 fw-bold">Empty!!</p></div>
+                    
+                </div>
+                <div class="end">
+                    <form class="message_box" id="postform" method="post" autocomplete="off">
+                        <input type="text" minlength="2" required class="message_text ps-2" 
+                        name="U_message" id="U_message" placeholder="Type a message">
+                        <button type="submit" value="submit" class="btn rounded-circle">
+                            <ion-icon name="send-outline" class="fs-5"></ion-icon>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Optional JavaScript; choose one of the two! -->
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-    <title>Hello, world!</title>
-  </head>
-  <body>
-    <h1>{{reply}}</h1>
-
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    -->
-  </body>
+        <script>
+            document.getElementById('postform').addEventListener('submit', getData);
+            function getData(e){
+                document.getElementById("No_message").style.display="none"
+                e.preventDefault();
+                var userDiv = document.createElement("div");
+                var userP = document.createElement("p");
+                var upper = document.getElementById("upper");
+                upper.appendChild(userDiv);
+                userDiv.appendChild(userP);
+                userDiv.classList.add("user_message")
+                userDiv.classList.add("pe-1")
+                userDiv.classList.add("mb-3")
+                userP.classList.add("rounded-pill")
+                userP.classList.add("pe-2")
+                userP.classList.add("ps-2")
+                userP.classList.add("p-1")
+                userP.classList.add("fw-bold")
+                var mesg = document.getElementById("U_message").value;
+                userP.innerText = mesg
+                document.getElementById("U_message").value = ""
+                var params = {message:mesg}
+                var xhr = new XMLHttpRequest();
+                xhr.open('post', '../reply', true)
+                xhr.setRequestHeader('Content-type', 'application/json');
+                xhr.onload = function(){
+                    var botDiv = document.createElement("div");
+                    var botP = document.createElement("p");
+                    var upper1 = document.getElementById("upper");
+                    upper1.appendChild(botDiv);
+                    botDiv.appendChild(botP);
+                    botDiv.classList.add("bot_message")
+                    botDiv.classList.add("ps-1")
+                    botDiv.classList.add("mb-3")
+                    botP.classList.add("rounded-pill")
+                    botP.classList.add("pe-2")
+                    botP.classList.add("ps-2")
+                    botP.classList.add("p-1")
+                    botP.classList.add("fw-bold")
+                    botP.innerText = this.responseText.split('"')[1]
+                    var objDiv = document.getElementById("upper");
+                    objDiv.scrollTop = objDiv.scrollHeight;
+                }
+                xhr.send(JSON.stringify(params));
+            }
+        </script>
+    </body>
 </html>
